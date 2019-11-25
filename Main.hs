@@ -1,6 +1,7 @@
 module Main where
   import Data.Char
   import Control.Applicative
+  import System.Environment
 
   -- NOTE: No support for floats
   -- NOTE: Iterating an JsonObject is slow. Implement Map
@@ -109,5 +110,12 @@ module Main where
     input <- readFile fileName
     return (snd <$> runParser parser input)
 
-  main :: IO()
-  main = undefined
+  main = do  
+    args <- getArgs
+    case args of
+      [] -> putStrLn "No Args"
+      (x:_) -> do
+        out <- parseFile x jsonValue
+        case out of
+          Just y -> putStrLn $ show y
+          _ -> putStrLn $ show out
